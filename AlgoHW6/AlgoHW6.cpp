@@ -43,7 +43,7 @@ vector<int> nextLegalPosition(vector<int> board, int n) {
 	// here the board must be full
 	for (int i = n - 1; i >= 0; i--) {
 		int prevPos = board[i];
-		for (int j = 0; j < n; j++) {
+		for (int j = n; j >= 1; j--) {
 			if (j != prevPos) {
 				vector<int> newBoard = board;
 				newBoard[i] = j;
@@ -58,7 +58,7 @@ vector<int> nextLegalPosition(vector<int> board, int n) {
 int main() {
 	vector<int> pos1 = { 1, 6, 8, 3, 7, 4, 2, 5 };
 	vector<int> pos2 = {1,6,8,3,5,0,0,0};
-	vector<int> ans1 = nextLegalPosition(pos2, 8);
+	vector<int> ans1 = nextLegalPosition(pos1, 8);
 	for (int i = 0; i < 8; i++) {
 		cout << ans1[i] << " ";
 	}
