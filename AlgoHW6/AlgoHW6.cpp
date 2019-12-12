@@ -26,13 +26,13 @@ bool isLegalPosition(vector<int> board, int n) {
 // n: The number of queens
 // Returns the next legal position
 vector<int> nextLegalPosition(vector<int> board, int n) {
-	for (int i = 1; i < n; i++) {
+	for (int i = 0; i < n; i++) { // maybe change back to 1
 		if (board[i] == 0) { // if the board is partial
 			int newPos;
 			if (isLegalPosition(board, n)) {
 				newPos = i;
 			} else newPos = i - 1;
-			for (int j = newPos; j > 0; j--) {
+			for (int j = newPos; j >= 0; j--) {
 				int newVal = board[j];
 				if (newVal != n) {
 					for (int a = newVal + 1; a <= n; a++) {
@@ -44,22 +44,23 @@ vector<int> nextLegalPosition(vector<int> board, int n) {
 				// here the row must be emptied out
 				board[j] = 0;
 			}
-			return vector<int>(n, 0);
+			return vector<int>(n, 0); // case when all solutions have been found
 		}
 	}
 	// here the board must be full
 	for (int i = n - 1; i >= 0; i--) {
 		int prevPos = board[i];
-		for (int j = n; j >= 1; j--) {
-			if (j != prevPos) {
+		if (prevPos != n) {
+			for (int j = prevPos + 1; j <= n; j++) {
 				vector<int> newBoard = board;
 				newBoard[i] = j;
 				if (isLegalPosition(newBoard, n)) return newBoard;
 			}
 		}
+		
 		board[i] = 0;
 	}
-	return vector<int>(n, 0); // dummy return will never happen I think
+	return vector<int>(n, 0); // no valid solutions after current board
 }
 
 // Determines if a given board is full
@@ -89,7 +90,16 @@ bool isEmpty(vector<int> board, int n) {
 // Returns a list of the completed boards
 vector<vector<int>> nQueens(int n) {
 	vector<vector<int>> solutions; // vector containing the solutions to the problem
-	
+
+	vector<int> test(n, 0);
+	test = nextLegalPosition(test, n);
+	while (!isEmpty(test, n)) {
+		test = nextLegalPosition(test, n);
+		if (isFull(test, n)) solutions.push_back(test);
+	}
+	return solutions;
+
+	/*
 	/*
 	for (int i = 1; i <= n; i++) {
 		vector<int> board(n, 0);
@@ -102,7 +112,7 @@ vector<vector<int>> nQueens(int n) {
 	}
 	*/
 	
-	
+	/*
 	
 	for (int i = 1; i <= n; i++) {
 		vector<int> board(n, 0);
@@ -113,6 +123,7 @@ vector<vector<int>> nQueens(int n) {
 		if (!isEmpty(board, n)) solutions.push_back(board);
 	}
 	return solutions;
+	*/
 }
 
 
@@ -132,7 +143,7 @@ void printSolutions() {
 }
 
 int main() {
-	/*
+	
 	vector<int> pos1 = { 1, 6, 8, 3, 7, 4, 2, 5 };
 	vector<int> pos2 = { 1, 6, 8, 3, 7, 0, 0, 0 };
 	vector<int> empty(8, 0);
@@ -146,15 +157,14 @@ int main() {
 		cout << ans2[i] << " ";
 	}
 	cout << endl;
-	//vector<vector<int>> four = nQueens(4);
-	vector<vector<int>> eight = nQueens(15);
-	for (int i = 0; i < eight.size(); i++) {
-		for (int j = 0; j < eight[i].size(); j++) {
-			cout << eight[i][j] << " ";
+	
+	vector<vector<int>> four = nQueens(8);
+	for (int i = 0; i < four.size(); i++) {
+		for (int j = 0; j < four[i].size(); j++) {
+			cout << four[i][j] << " ";
 		}
 		cout << endl;
 	}
-	*/
-	vector<vector<int>> sol = nQueens(4);
+	
 
 }
